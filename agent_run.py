@@ -2,23 +2,37 @@ import os
 import asyncio
 from rich import print 
 from openai.types.responses import ResponseTextDeltaEvent 
-from agents import (Agent, Runner, AsyncOpenAI, OpenAIResponsesModel)
+from agents import Agent, Runner, AsyncOpenAI, OpenAIResponsesModel
 import argparse
 
-def run_sync(prompt: str):
-    llm_model = OpenAIResponsesModel(model='gpt-4o-mini', openai_client=AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY")))
-    user_facing_agent = Agent(
-        name='User Interaction Agent', 
-        model=llm_model, 
+def build_user_agent() -> Agent:
+    """Helper to configure the LLM model and Agent."""
+    llm_model = OpenAIResponsesModel(
+        model='gpt-4o-mini',
+        openai_client=AsyncOpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+    )
+    return Agent(
+        name='User Interaction Agent',
+        model=llm_model,
         output_type=str,
-        instructions='You are a user-facing agent. Your job is to interact with the user and help them their tasks.',
+        instructions='You are a user-facing agent. Your job is to interact with the user and help them with their tasks.',
     )
 
+def run_sync(prompt: str):
+    user_agent = build_user_agent()
     response = Runner.run_sync(
-        starting_agent=user_facing_agent, 
+        starting_agent=user_agent,
         input=prompt
     )
+    print('Token Usage', response.raw_responses[0].usage, '')
+    print(f'{response.last_agent.name}:\n{response.final_output}')
 
+async def run_async(prompt: str):
+    user_agent = build_user_agent()
+    response = await Runner.run(
+        starting_agent=user_agent,
+        input=prompt
+    )
     print('Token Usage', response.raw_responses[0].usage, '')
     print(f'{response.last_agent.name}:\n{response.final_output}')
 
@@ -27,9 +41,13 @@ if __name__ == "__main__":
     parser.add_argument('prompt', nargs='?', help='The prompt to send to the agent')
     args = parser.parse_args()
 
-    if args.prompt:
-        prompt = args.prompt
-    else:
-        prompt = input("Enter your prompt: ")
+    # 1) Ask sync vs async first
+    mode = input("Run synchronously or asynchronously? (sync/async) [sync]: ").strip().lower()
 
-    run_sync(prompt=prompt)
+    # 2) Then get the prompt (either from CLI or via input)
+    prompt = args.prompt or input("Enter your prompt: ")
+
+    if mode in ('async', 'a'):
+        asyncio.run(run_async(prompt))
+    else:
+        run_sync(prompt)
