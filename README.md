@@ -5,5 +5,5 @@ This repo follows the tutorial at [OpenAI Agents SDK Crash Course - Everything Y
 ## Commands
 
 ```bash
-poetry add openai-agents rich duckduckgo-search
+poetry add openai-agents rich ddgs
 ```

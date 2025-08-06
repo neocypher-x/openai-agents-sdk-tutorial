@@ -194,6 +194,26 @@ files = [
 ]
 
 [[package]]
+name = "ddgs"
+version = "9.5.2"
+description = "Dux Distributed Global Search. A metasearch library that aggregates results from diverse web search services."
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "ddgs-9.5.2-py3-none-any.whl", hash = "sha256:3685246763426f6bca06db709dc4464db7940b8a418b56880f0ae41c3480e0c3"},
+    {file = "ddgs-9.5.2.tar.gz", hash = "sha256:1011cb0ad2329163c9f92b61231c654a8abe0bfdc9a3877dbf45bf41bf6a11ba"},
+]
+
+[package.dependencies]
+click = ">=8.1.8"
+lxml = ">=5.3.0"
+primp = ">=0.15.0"
+
+[package.extras]
+dev = ["mypy (>=1.14.1)", "pytest (>=8.3.4)", "pytest-dependency (>=0.6.0)", "ruff (>=0.9.2)"]
+
+[[package]]
 name = "distro"
 version = "1.9.0"
 description = "Distro - an OS platform information API"
@@ -223,26 +243,6 @@ python-dotenv = "*"
 
 [package.extras]
 dev = ["check-manifest"]
-
-[[package]]
-name = "duckduckgo-search"
-version = "8.1.1"
-description = "Search for words, documents, images, news, maps and text translation using the DuckDuckGo.com search engine."
-optional = false
-python-versions = ">=3.9"
-groups = ["main"]
-files = [
-    {file = "duckduckgo_search-8.1.1-py3-none-any.whl", hash = "sha256:f48adbb06626ee05918f7e0cef3a45639e9939805c4fc179e68c48a12f1b5062"},
-    {file = "duckduckgo_search-8.1.1.tar.gz", hash = "sha256:9da91c9eb26a17e016ea1da26235d40404b46b0565ea86d75a9f78cc9441f935"},
-]
-
-[package.dependencies]
-click = ">=8.1.8"
-lxml = ">=5.3.0"
-primp = ">=0.15.0"
-
-[package.extras]
-dev = ["mypy (>=1.14.1)", "pytest (>=8.3.4)", "pytest-dependency (>=0.6.0)", "ruff (>=0.9.2)"]
 
 [[package]]
 name = "griffe"
@@ -1335,4 +1335,4 @@ standard = ["colorama (>=0.4) ; sys_platform == \"win32\"", "httptools (>=0.6.3)
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.12"
-content-hash = "2efb9c38b925c2e70c3079c799f1dfd737e979407fecc78ad8d604d623ecf44a"
+content-hash = "6404a861d8ce7d95ded971dbeca43ee35d9c8199fb261d3065044ab83735d5ba"
